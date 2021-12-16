@@ -1,0 +1,28 @@
+{
+  "name": "ganglion",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=production node ./server.mjs",
+    "deploy": "pm2 start npm --name ganglion -- start",
+    "dev": "nodemon --inspect ./server.mjs 80",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syntachaosx/Ganglion.git"
+  },
+  "author": "syntachaosx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syntachaosx/Ganglion/issues"
+  },
+  "homepage": "https://github.com/syntachaosx/Ganglion#readme",
+  "dependencies": {
+    "@hapi/hapi": "^20.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
