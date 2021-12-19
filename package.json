@@ -7,6 +7,7 @@
     "start": "NODE_ENV=production node ./server.mjs",
     "deploy": "pm2 start npm --name ganglion -- start",
     "dev": "nodemon --inspect ./server.mjs 80",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,9 +21,15 @@
   },
   "homepage": "https://github.com/syntachaosx/Ganglion#readme",
   "dependencies": {
-    "@hapi/hapi": "^20.2.1"
+    "@hapi/hapi": "^20.2.1",
+    "@prisma/client": "^3.6.0",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.12.0-beta.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "prisma": "^3.6.0",
+    "sequelize-cli": "^6.3.0"
   }
 }

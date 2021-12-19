@@ -1,9 +1,9 @@
 export default function (server) {
   server.route({
     method: 'GET',
-    path: '/test',
+    path: '/ping',
     handler: function (request, h) {
-      return 'hello, world!'
+      return 'pong'
     },
   })
   return server

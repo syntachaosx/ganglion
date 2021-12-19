@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  USER
+  Bot
+}
+
+model User {
+  id         Int           @id @default(autoincrement())
+  nick_name  String
+  user_name  String
+  password   String
+  role       UserType      @default(USER)
+  tokens     AuthToken[]
+  data       UserData[]
+  BotRecord  BotUserData[]
+  followedBy UserFollows[] @relation("follower")
+  following  UserFollows[] @relation("following")
+  createdAt  DateTime      @default(now())
+}
+
+model AuthToken {
+  id        Int       @id @default(autoincrement())
+  tokens    String    @db.VarChar(255)
+  ownerId   Int
+  owner     User      @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model UserFollows {
+  follower    User @relation("follower", fields: [followerId], references: [id])
+  followerId  Int
+  following   User @relation("following", fields: [followingId], references: [id])
+  followingId Int
+
+  @@id([followerId, followingId])
+}
+
+model UserData {
+  id        Int       @id @default(autoincrement())
+  content   String    @db.Text
+  name      String    @db.VarChar(255)
+  ownerId   Int
+  owner     User      @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+// Bot
+model BotProfle {
+  id          Int           @id @default(autoincrement())
+  originId    Int
+  settings    Json
+  active      Boolean       @default(true)
+  BotUserData BotUserData[]
+}
+
+model BotUserData {
+  id        Int       @id @default(autoincrement())
+  content   String    @db.Text
+  name      String    @db.VarChar(255)
+  userId    Int
+  User      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  botId     Int
+  Bot       BotProfle @relation(fields: [botId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+// Messgae
+model Message {
+  id         Int       @id @default(autoincrement())
+  from       Int
+  to         Int
+  type       String    @db.VarChar(255)
+  payload    Json
+  readedAt   DateTime?
+  receivedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+}
