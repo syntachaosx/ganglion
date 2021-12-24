@@ -66,6 +66,16 @@ async function flashToken(token) {
   return prisma.authToken.findFirst({ where: { token } })
 }
 
+async function resetPassword(userId, password) {
+  const hashText = await encrypt(password)
+  const result = await prisma.user.updateMany({
+    where: { id: userId },
+    data: { password: hashText },
+  })
+
+  return result
+}
+
 export default {
   create,
   update,
@@ -73,4 +83,5 @@ export default {
   verify,
   createAuthToken,
   flashToken,
+  resetPassword,
 }
